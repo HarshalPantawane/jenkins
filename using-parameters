@@ -1,0 +1,22 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('git clone') {
+            steps {
+               git branch: 'main', url: 'https://github.com/HarshalPantawane/terraform.git'
+            }
+        }
+          stage('use specific folder') {
+             steps {
+               dir('day-5-lifecycle-rule'){
+                 sh 'terraform init'
+                 sh'terraform plan'
+                 sh 'terraform ${action} -auto-approve'
+               }
+             }
+         }
+       
+        
+    }
+}
