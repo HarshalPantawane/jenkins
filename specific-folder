@@ -40,5 +40,15 @@ pipeline {
                }
             }
         }
+
+#### destroy ####
+        stage('destroy') {
+            steps {
+               
+            dir('day-5-lifecycle-rule'){
+                sh 'terraform destroy -auto-approve'
+              }
+            }
+        }
     }
 }
