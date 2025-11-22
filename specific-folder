@@ -1,0 +1,44 @@
+#### for specific forlder from repo #####
+
+pipeline {
+    agent any
+
+    stages {
+        stage('git clone') {
+            steps {
+               git branch: 'main', url: 'https://github.com/HarshalPantawane/terraform.git'
+            }
+        }
+          stage('use specific folder') {
+             steps {
+               dir('day-5-lifecycle-rule'){
+                 sh 'ls -la'
+               }
+             }
+         }
+        stage('init') {
+            steps {
+                
+                dir('day-5-lifecycle-rule'){
+                  sh 'terraform init'
+               }
+            }
+        }
+          stage('plan') {
+            steps {
+               
+              dir('day-5-lifecycle-rule'){
+                 sh 'terraform plan'
+               }
+            }
+        }
+         stage('apply') {
+            steps {
+                
+              dir('day-5-lifecycle-rule'){
+                 sh 'terraform apply -auto-approve'
+               }
+            }
+        }
+    }
+}
