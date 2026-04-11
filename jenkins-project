@@ -25,5 +25,14 @@ pipeline {
          """
         }
      }
+     stage('Artifact store'){
+       steps{
+         sh """
+         echo "------Pushing Artifact to S3------"
+         aws s3 cp ./target/*.jar s3://datastore-Artifact-store-jenkins-apps/
+         echo "-----Push Artifact to S3 completed-----"
+         """
+        }
+      }
   }
 }
