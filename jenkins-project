@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  parameters {
+     string(name: "App_Version", description: "provide application version")
+  }
+
   stages {
     stage('Checkout') {
       steps {
@@ -33,6 +37,15 @@ pipeline {
          echo "-----Push Artifact to S3 completed-----"
          """
         }
+    }
+    stage("Docker Image Build") {
+      steps {
+        sh """
+          echo "-------- Building Docker Image --------"
+          docker build -t datastore:"${App_Version}" .
+          echo "-------- Image Successfully Built --------"
+        """
       }
+    }  
   }
 }
