@@ -29,6 +29,13 @@ pipeline {
          """
         }
      }
+     stage('SonarQube') {
+       steps {
+          withSonarQubeEnv('SonarQube') {
+            sh 'mvn sonar:sonar'
+          }
+        }
+    }
      stage('Artifact store'){
        steps{
          sh """
@@ -53,6 +60,15 @@ pipeline {
           echo "-------- Scanning Docker Image --------"
           trivy image datastore:"${App_Version}"
           echo "-------- Scanning Docker Image Complete --------"
+        """
+      }
+    }
+    stage("Docker Image Tag") {
+      steps{
+        sh """
+          echo "-------- Tagging Docker Image --------"
+          docker tag datastore:"${App_Version}" 8072388539/datastore:"${App_Version}"
+          echo "-------- Tagging Docker Image Completed."
         """
       }
     }
